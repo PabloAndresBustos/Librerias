@@ -1,24 +1,30 @@
 const { Books } = require('../models/books');
 const {Library} = require('../models/library');
-const { createdBook } = require('./books_services');
-const {parameterByBody, parameterByParams} = require('../validaciones/validation_parameters');
+const { createdBook, oneBook } = require('./books_services');
+const {parameterByBody, parameterByParams} = require('../validations/validation_parameters');
 
 /* Buscar una libreria */
+/* Esta funcion se utiliza en la funcion registerLibrary es solo de uso interno, no posee ruta. 
+Cabe aclarar que mi idea con esta funcion es evitar las librerias duplicadas en todo caso se puede
+colocar el mismo nombre + Sucursal x */
 async function this_library(name){
     /* Buscamos las bibliotecas que no esten dadas de baja en la base de datos y que tengan el mismo nombre */
     const library = await Library.findOne({
         where: {
-            name: name,
+            name: name
         }
-    });
-    /* En caso de que no traiga ninguna biblioteca retornaremos true, caso contrario solo tomaremos el nombre */
+    })
+    /* En caso de que no traiga ninguna biblioteca retornaremos true */
     if(!library){
         return true;
     }else{
+        /* Si la libreria exista y esta dada de baja, dado que el usuria es admin
+        damos la posibilidad de cambiar el estado de esa libreria par poder darla de alta */
         if(library.is_deleted == "yes"){
             console.log("Puede dar de alta una libraria dada de baja modificando el valor is_deleted");
             throw new Error("La librebria esta en la base de datos dada de baja dirigase a library/down_libraries para verificarla")
         }else{
+            /* Caso contrari devolvemos el nombre  */
             const libraryName = library.name;
             return libraryName;
         }
@@ -32,8 +38,11 @@ async function registerLibrary(name, location, phone){
         parameterByBody(location, 'string');
         parameterByBody(phone, 'string');
 
+        /* Verificamos si la libreria ya se encuentra en la base de datos */
         const thisLibrary = await this_library(name);
-        if(thisLibrary != name){
+        
+        /* Si no hay librerias con el mismo nombre procedemos con la crecion de una nueva.  */
+        if(thisLibrary !== name){
             const library = new Library();
     
             library.name = name
@@ -44,6 +53,7 @@ async function registerLibrary(name, location, phone){
         
             return newLibrary;
         }else{
+            /* Si el nombre de la liberia es la misma, indicamos que la libreria ya esta creada */
             console.log("No se puede crear 2 veces la misma biblioteca");
             throw new Error("La librerira ya se encuentra en al base de datos");
         }
@@ -53,22 +63,26 @@ async function registerLibrary(name, location, phone){
 async function getLibrary(id){
     
     parameterByParams(id);
-    
+    /* Creamos un objeto vacio donde guardaremos los resultados */
     const booksOnLibrary = {}
+    /* Buscamos la libreria por id */
     const library = await Library.findByPk(id);
+    /* Buscamos todos los libros cuya realacion con la libria sea igual al id de la libreria */
     const books = await Books.findAll({
         where: {
-            library_id : id,
+            library_id: id,
             is_deleted: "no"
         }
     });
 
+    /* Al obtener la libreria la agregamos al objeto creado junto con los libros */
     if(library){
         booksOnLibrary.library = library;
         booksOnLibrary.books = books;
     
         return booksOnLibrary;
     }else{
+        /* Si no encontramos libreria, la libreria no existe */
         throw new Error("La libreria no existe");
     }
 }
@@ -76,12 +90,14 @@ async function getLibrary(id){
 /* Obterner todas las librerias */
 async function takeAll(){
     
+    /* Buscamos todas la librerias que no esten eliminadas. */
     const libraries = await Library.findAll({
         where: {
             is_deleted: "no"
         }
     });
 
+    /* Si no encontramos librerias asumimos problemas de conexion. */
     if(!libraries){
         throw new Error("Error con la conexion a la base de datos")
     }else{
@@ -93,6 +109,7 @@ async function takeAll(){
 /* Obtener todas las librerias dadas de baja */
 async function allDown(){
     
+    /* Buscamos todas la librerias que esten eliminadas. */
     const libraries = await Library.findAll({
         where: {
             is_deleted: "yes"
@@ -100,6 +117,7 @@ async function allDown(){
     });
 
     if(!libraries){
+        /* Si no encontramos librerias asumimos problemas de conexion. */
         throw new Error("Error con la conexion a la base de datos")
     }else{
         return libraries;
@@ -115,9 +133,12 @@ async function editLibrary(id, name, location, phone, is_deleted){
     parameterByBody(phone, 'string');
     parameterByBody(is_deleted, 'string');
 
+    /* Buscamos la libreria por Id */
     const library = await Library.findByPk(id);
 
+    
     if(library){
+        /* Si se ingresaron alguno de estos parametros se modificaran */
         if(name || location || phone || is_deleted){
             library.name = name
             library.location = location
@@ -129,6 +150,7 @@ async function editLibrary(id, name, location, phone, is_deleted){
     
         return library_edited;
     }else{
+        /* En caso de no encontrar librarias */
         throw new Error("La libreria no existe");
     }
 }
@@ -137,16 +159,24 @@ async function editLibrary(id, name, location, phone, is_deleted){
 async function deletedLibrary(id){
 
     parameterByParams(id)
-    const library = await Library.findByPk(id);
 
-    if(library){
-        library.is_deleted = "yes";
+    /* Seleccionamos la libreria con todos sus libros */
+    const selectLibrary = await getLibrary(id);
 
-        await library.save();
+    /* Si obtenemos libreria */
+    if(selectLibrary){
+        /* Dejamos sin asignacion de libreria los libros que estaban asociados a esta */
+        selectLibrary.books.map(book=>{
+            book.library_id = null
+            book.save();
+        });
+        
+        /* Luego dejamos marcada la libreria como eliminada */
+        selectLibrary.library.is_deleted = "yes";
+        selectLibrary.library.save();
     }else{
-        throw new Error("La libreria no existe");
+        throw new Error("La libreria saleccionada no existe en la base de datos.");
     }
-
 
 }
 
@@ -154,17 +184,16 @@ async function deletedLibrary(id){
 async function addBook(id, isbn, title, autor, publish_year){
 
     parameterByParams(id);
-/*     parameterByBody(isbn, 'string');
-    parameterByBody(title, 'string');
-    parameterByBody(autor, 'string');
-    parameterByBody(publish_year, 'string'); */
     
-    /* Importado desde books_services */
-    await createdBook(isbn, title, autor, publish_year, id);
-
     const libraryBooks = await getLibrary(id);
 
+    /* Importado desde books_services */
+    /* Se crea el libro a agregar a la libreria con la funcion createdBook, pero en el parametro de library_id
+    ingresamos el id que recibimos por parametro para dejarlo directamente asociado a la libreria */
+    await createdBook(isbn, title, autor, publish_year, id);
+
     if(libraryBooks){
+        /* Retornamos la libreria con todos lo libros donde se vera agreado el nuevo. */
         return libraryBooks;
     }else{
         throw new Error("El libro no se agrego");

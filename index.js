@@ -9,10 +9,10 @@ const { authenticationStart } = require('./src/authenticationJWT/authentication'
 
 /* Configuracion del servidor */
 const app = express();
-const port = 3030;
+const port = 3031;
 app.use(express.json());
 
-/* Creando usurio admin */
+/* El usuario admin debe ser creado cuando se inicia la API */
 console.log('**********************');
 console.log("Creando usuario admin")
 console.log('**********************');

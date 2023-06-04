@@ -1,15 +1,14 @@
 const {Books} = require('../models/books');
 const {Library} = require('../models/library');
-const {parameterByParams, parameterByBody} = require('../validaciones/validation_parameters')
+const {parameterByParams, parameterByBody} = require('../validations/validation_parameters')
 
 /* Mismo libro */
 async function sameBook(isbn){
     const book = await Books.findOne({
         where: {
-            isbn: isbn,
+            isbn: isbn
         }
     })
-
     return book;
 }
 
@@ -21,15 +20,21 @@ async function createdBook(isbn, title, autor, publish_year, library_Id){
     parameterByBody(autor, 'string');
     parameterByBody(publish_year, 'string');
 
-    const equalBook = await sameBook(isbn);
+    /* Buscaremos por medio del ISBN si existe algun libro */
+    const equalBook = await sameBook(isbn);  
     
+    /* Si se nos bronde el ID de la libraria dejaremos el nuevo libro asociado a esa libreria. */
     if(library_Id){
         const existLibrary = await Library.findByPk(library_Id);
+        /* Si el ID de la libreria no existe se brinda informacion. */
         if(!existLibrary){
             throw new Error("La libreria no existe, puede dejarla desaociado o buscar una que exista");
         }
-    }         
+    }
 
+    /* Si no hay libro registrado con el mismo ISBN el libro se creara. Si el ISBN es igual comprobamos 
+    el titulo, autor y año de publicacion, con estos datos vemos que es el mismo libro. En ese caso crearemos
+    el libro, encaso de que alguno de estos datos se diferente informamos que el ISBN es de otro libro */
     if(!equalBook || (equalBook.title === title && equalBook.autor === autor  && equalBook.publish_year === publish_year)){
         const book = new Books();
 
@@ -52,11 +57,19 @@ async function oneBook(id){
 
     parameterByParams(id);
 
-    const book = await Books.findByPk(id);
+    /* Buscamos el libro por medio del id */
+    const book = await Books.findOne({
+        where: {
+            id: id,
+            is_deleted: "no"
+        }
+    });
 
     if(book){
+        /* Si lo encontramos lo mostramos */
         return book;
     }else{
+        /* Caso contrario indicamos que le libro no esta en la base de datos. */
         throw new Error("El libro que buscas no se encuentra en las bibliotecas");
     }
 
@@ -99,20 +112,22 @@ async function downBooks(){
 async function editBook(id, isbn, title, autor, publish_year, library_Id){
 
     parameterByParams(id, 'number');
-    parameterByBody(isbn, 'string');
     parameterByBody(title, 'string');
     parameterByBody(autor, 'string');
     parameterByBody(publish_year, 'string');
+    parameterByBody(is_deleted, 'string');
 
     const book = await oneBook(id)
-
+    /* Si encuentro un libro en la base de datos y se nos brinda alguno de los datos para modificar lo midicamos 
+    permito modificar el parametro is_deleted ya que el usuario es admin poder dar de alta un libro, esto en caso
+    de una devoluvion por ejemplo*/
     if(book){
-        if (isbn || title || autor || publish_year || library_Id){
-            book.isbn = isbn
+        if (title || autor || publish_year || library_Id || is_deleted){
             book.title = title
             book.autor = autor
             book.publish_year = publish_year
             book.library_Id = library_Id
+            book.is_deleted = is_deleted
         }
     
         const book_edited = await book.save();
@@ -134,10 +149,9 @@ async function deleteBook(id){
 
     if(book){
         book.is_deleted = "yes";
-
         await book.save();
     }else{
-        throw new Error("")
+        throw new Error("El libro que desea eliminar no esta en la base de datos.")
     }
 }
 

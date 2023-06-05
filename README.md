@@ -1,3 +1,5 @@
+[¿PORQUE?](why.md)
+
 <div style="display: flex; flex-direction: column; align-items: center;">
 <img src="https://drive.google.com/uc?export=view&id=1QdVq3T3Ab1LW68y3YzaZ5LyemsJ0glon" style="border-radius: 30%; margin-bottom: 3rem; border: 1px solid black">
 </div>
@@ -81,7 +83,6 @@
             <li><strong>Bonus:</strong> Que haya validación de las entidades al momento de crearse/actualizarse</li>
         </ul>
         <h1 style="color: black; text-decoration: underline">¿Por que?</h1>
-        [¿PORQUE?](why.md)
 <div style="text-align: center; font-size: 24px">
     <h1 style="text-decoration: underline; color: black; margin-top: 10rem">Profesor</h1>
 </div>

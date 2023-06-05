@@ -10,8 +10,7 @@ const userAuthenticate = (req, res, next)=>{
             const error = new Error("Usuario no valido, Favor de verificar las credenciales.");
             return next(error);
         }
-
-        next();
+        next()
     })(req, res, next)
 }
 

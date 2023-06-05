@@ -10,14 +10,8 @@ const PassportStrategy = new JwtStrategy({
     /* Extraemos el token desde la solicitud y la llave del token configurado en JWT */
     jwtFromRequest: JwtExtract.fromAuthHeaderAsBearerToken(),
     secretOrKey: 'keyOfToken'
-}, async (jwtPayload, next)=>{
     /* CallBack para verificar la integridad del token */
-
-    /* Si no recimos el Payload(cons los datos que se cargaron el token) mostraremos el error*/
-    if(!jwtPayload){
-        throw new Error("El usuario no esta logeado");
-    }
-
+}, async (jwtPayload, next)=>{
     /* Buscaremos el usuario en la base de datos, con el id guardado en el payload */
     const user = await Users.findByPk(jwtPayload.id);
 
@@ -27,6 +21,12 @@ const PassportStrategy = new JwtStrategy({
     }else{
         next(true, null, null)
     }
+
+    /* Si no recimos el Payload(cons los datos que se cargaron el token) mostraremos el error*/
+/*     if(!jwtPayload){
+        throw new Error("El usuario no esta logeado");
+    } */
+    
 });
 
 

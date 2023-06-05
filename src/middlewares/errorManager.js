@@ -1,6 +1,6 @@
 const wrongInCode = (err, req, res, next)=>{
     /* Dos constantes donde guardamos el mesage y el estado del error */
-    const errStatus = err.status;
+    const errStatus = err.status || 500;
     const errMsg = err.message;
     
     /* Devolvemos el estado del error, con el mesage del error, en este caso los errores creados

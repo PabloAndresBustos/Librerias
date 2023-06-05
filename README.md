@@ -5,10 +5,8 @@
     <h1 style="color: black; text-decoration: underline">Ejercicio 6<h1>
     <h2 style="color: black; text-decoration: underline; margin-bottom: 2rem"> NODE.JS<h2>
 </div>
-
 <h2 style="text-align: center; color: black">Enunciado</h2>
-    <p style="text-align: left; color: black">Se requiere una API REST que permita manejar librerías y los libros asociados a cada una de
-    las librerías. Utilizar Node.Js Express, Sequelize y Passport como la infraestructura para crear
+    <p style="text-align: left; color: black">Se requiere una API REST que permita manejar librerías y los libros asociados a cada una de las librerías. Utilizar Node.Js Express, Sequelize y Passport como la infraestructura para crear
     el servicio.</p>
     <h2 style="text-align: center; color: black">Libreria</h2>
     <ul style="text-align: left; color: black">
@@ -25,10 +23,10 @@
         </ul>
     </ul>
     <h1 style="color: black"><strong>Entidad</strong></h1>
-    <p style="color: black">id | Int | El identificador de la librería</p>
-    <p style="color: black">name | String | Nombre de la librería. Eg: El Librote</p>
-    <p style="color: black">location | String | Dirección física de la librería. Eg: Av. Libertador 1460</p>
-    <p style="color: black">telefono | String | Número de teléfono. Eg: 3514563344</p>
+    <img >
+    <br>
+        <img src="https://drive.google.com/uc?export=view&id=1yiNiYkZjf0x5Mwuwme01Pw7nlgtXQ4p_">
+    <br>
     <br>
     <br>
     <h2 style="text-align: center; color: black">Libro</h2>
@@ -47,12 +45,10 @@
         </ul>
     </ul>
     <h1 style="color: black"><strong>Entidad</strong></h1>
-            <p style="color: black">id Int El identificador de este libro en particular</p>
-            <p style="color: black">isbn | Int | Este identificador es único en todo el mundo y representa el libro, la versión del autor y el año de edición</p>
-            <p style="color: black">titulo | String | Título del libro</p>
-            <p style="color: black">autor | String | Autor del libro</p>
-            <p style="color: black">year | String | Año de edición del libro</p>
-            <p style="color: black">library |Int | El identificador de la librería en donde este libro se encuentra</p>
+            <img src="https://drive.google.com/uc?export=view&id=1aY__zGPRoi6L2MWMi4s54cMlcLHmMVdZ">
+            <br>
+            <br>
+            <br>
             <h2 style="text-align: center; color: black">(*): Para crear un libro, pueden hacerlo de las dos formas:</h2>
         <ul style="text-align: left; color: black">
             <li>Haciendo que la librería tenga un método para agregar un libro nuevo</li>
@@ -84,6 +80,8 @@
             <li>Describir el proceso de desarrollo. (Cómo fueron fueron creados los archivos y por qué)</li>
             <li><strong>Bonus:</strong> Que haya validación de las entidades al momento de crearse/actualizarse</li>
         </ul>
+        <h1 style="color: black; text-decoration: underline">¿Por que?</h1>
+        [¿PORQUE?](why.md)
 <div style="text-align: center; font-size: 24px">
     <h1 style="text-decoration: underline; color: black; margin-top: 10rem">Profesor</h1>
 </div>

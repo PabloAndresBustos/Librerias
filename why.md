@@ -16,3 +16,5 @@ Agregamos 2 funciones que permitiran comprobar el tipo y valor de los parametros
 El usuario en efecto se creara al inicar la API, pero el valor contraseña se encuentra encriptado por medio de bcrypt.
 
 La base de datos es online por medio de https://www.clever-cloud.com/ Encontraran los datos para acceder a la Base de datos en el mismo codigo. Aun asi dejamos los .sql para poder crear la misma de manera local. 
+
+[<== Volver](README.md)

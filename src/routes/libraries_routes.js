@@ -2,13 +2,14 @@ const express = require('express');
 const librariesController = require('../controllers/libraries_controllers');
 const { userAuthenticate } = require('../middlewares/user_authentication');
 
+
 const librariesRouter = express.Router();
 
 /* Ruta para obtener todas la librerias */
 librariesRouter.get('/all_libraries', librariesController.allLibraries);
 
 /* Ruta para registrar una nueva libreria */
-librariesRouter.post('/library_register',userAuthenticate, librariesController.createLibrary);
+librariesRouter.post('/register_library',userAuthenticate, librariesController.createLibrary);
 
 /* Ruta para obtener una libreria */
 librariesRouter.get('/the_library/:id', librariesController.oneLibrary);

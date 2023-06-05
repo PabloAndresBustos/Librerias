@@ -7,6 +7,9 @@ const { createUser, adminUser } = require('./src/services/users_services');
 const { wrongInCode } = require('./src/middlewares/errorManager');
 const { authenticationStart } = require('./src/authenticationJWT/authentication');
 
+/* Passport para validar usuario en las rutas */
+authenticationStart();
+
 /* Configuracion del servidor */
 const app = express();
 const port = 3031;
@@ -22,9 +25,6 @@ createUser("admin", "admin");
 app.use('/library', librariesRouter);
 app.use('/book', booksRouter);
 app.use('/user', userRouter);
-
-/* Passport para validar usuario en las rutas */
-app.use(authenticationStart);
 
 /* Middlewares */
 app.use(wrongInCode);

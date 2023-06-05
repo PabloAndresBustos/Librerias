@@ -1,34 +1,35 @@
-const {Model, DataTypes} = require('sequelize');
-const { libraries_db } = require('../db/libraries_db');
+const { Model, DataTypes } = require("sequelize");
+const { libraries_db } = require("../db/libraries_db");
 
-class Library extends Model{
+class Library extends Model {}
 
-}
-
-Library.init({
+Library.init(
+  {
     id: {
-        type: DataTypes.INTEGER,
-        allowNull: false,
-        autoIncrement: true,
-        primaryKey: true
+      type: DataTypes.INTEGER,
+      allowNull: false,
+      autoIncrement: true,
+      primaryKey: true,
     },
     name: {
-        type: DataTypes.STRING
+      type: DataTypes.STRING,
     },
     location: {
-        type: DataTypes.STRING
+      type: DataTypes.STRING,
     },
     phone: {
-        type: DataTypes.STRING
+      type: DataTypes.STRING,
     },
     is_deleted: {
-        type: DataTypes.STRING
-    }
-}, {
+      type: DataTypes.STRING,
+    },
+  },
+  {
     sequelize: libraries_db,
-    modelName: 'libraries',
+    modelName: "libraries",
     createdAt: false,
-    updatedAt: false
-})
+    updatedAt: false,
+  }
+);
 
-module.exports = {Library}
+module.exports = { Library };

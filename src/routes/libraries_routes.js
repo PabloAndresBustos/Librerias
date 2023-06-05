@@ -15,7 +15,7 @@ librariesRouter.post('/register_library',userAuthenticate, librariesController.c
 librariesRouter.get('/the_library/:id', librariesController.oneLibrary);
 
 /* Ruta para Editar librerias */
-librariesRouter.put('/change_library/:id',userAuthenticate, librariesController.modifyLibrary);
+librariesRouter.put('/change_library/:id',userAuthenticate ,librariesController.modifyLibrary);
 
 /* Ruta para eliminar librerias */
 librariesRouter.delete('/remove_library/:id',userAuthenticate, librariesController.removeLibrary);

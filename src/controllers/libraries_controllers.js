@@ -75,7 +75,7 @@ async function removeLibrary(req, res, next){
 
 async function moreBook(req, res, next){
     const {id} = req.params;
-    const {isbn, title, autor, publish_year, library_Id} = req.body;
+    const {isbn, title, autor, publish_year} = req.body;
 
     try {   
         const library = await librariesManager.addBook(id, isbn, title, autor, publish_year);

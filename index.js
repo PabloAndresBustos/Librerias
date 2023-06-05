@@ -15,12 +15,6 @@ const app = express();
 const port = 3031;
 app.use(express.json());
 
-/* El usuario admin debe ser creado cuando se inicia la API */
-console.log('**********************');
-console.log("Creando usuario admin")
-console.log('**********************');
-createUser("admin", "admin");
-
 /* Rutas */
 app.use('/library', librariesRouter);
 app.use('/book', booksRouter);
@@ -34,3 +28,9 @@ app.listen(port, ()=>{
     console.log(`El servidor esta online en el puerto: ${port}`);
     console.log('*********************************************');
 });
+
+/* El usuario admin debe ser creado cuando se inicia la API */
+console.log('**********************');
+console.log("Creando usuario admin")
+console.log('**********************');
+createUser("admin", "admin");

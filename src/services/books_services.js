@@ -13,7 +13,7 @@ async function sameBook(isbn){
 }
 
 /* Crear un libro */
-async function createdBook(isbn, title, autor, publish_year, library_Id){
+async function createdBook(isbn, title, autor, publish_year, library_id){
 
     parameterByParams(isbn, 'number');
     parameterByBody(title, 'string');
@@ -23,9 +23,15 @@ async function createdBook(isbn, title, autor, publish_year, library_Id){
     /* Buscaremos por medio del ISBN si existe algun libro */
     const equalBook = await sameBook(isbn);  
     
-    /* Si se nos bronde el ID de la libraria dejaremos el nuevo libro asociado a esa libreria. */
-    if(library_Id){
-        const existLibrary = await Library.findByPk(library_Id);
+    /* Si se nos brinda el ID de la libraria dejaremos el nuevo libro asociado a esa libreria. */
+    if(library_id !== undefined){
+        parameterByParams(library_id);
+        const existLibrary = await Library.findOne({
+            where: {
+                id: library_id,
+                is_deleted: "no"
+            }
+        });
         /* Si el ID de la libreria no existe se brinda informacion. */
         if(!existLibrary){
             throw new Error("La libreria no existe, puede dejarla desaociado o buscar una que exista");
@@ -42,7 +48,7 @@ async function createdBook(isbn, title, autor, publish_year, library_Id){
         book.title = title
         book.autor = autor
         book.publish_year = publish_year
-        book.library_Id = library_Id
+        book.library_id = library_id
     
         const newBook = await book.save();
     
@@ -109,25 +115,34 @@ async function downBooks(){
 }
 
 /* Modificar un libro */
-async function editBook(id, isbn, title, autor, publish_year, library_Id){
+async function editBook(id, title, autor, publish_year, is_deleted, library_id){
 
     parameterByParams(id, 'number');
-    parameterByBody(title, 'string');
-    parameterByBody(autor, 'string');
-    parameterByBody(publish_year, 'string');
-    parameterByBody(is_deleted, 'string');
-
+    
     const book = await oneBook(id)
     /* Si encuentro un libro en la base de datos y se nos brinda alguno de los datos para modificar lo midicamos 
     permito modificar el parametro is_deleted ya que el usuario es admin poder dar de alta un libro, esto en caso
     de una devoluvion por ejemplo*/
     if(book){
-        if (title || autor || publish_year || library_Id || is_deleted){
-            book.title = title
-            book.autor = autor
-            book.publish_year = publish_year
-            book.library_Id = library_Id
-            book.is_deleted = is_deleted
+        if (title !== undefined){
+            parameterByBody(title, 'string');
+            book.title = title;
+        }
+        if (autor !== undefined){
+            parameterByBody(autor, 'string');
+            book.autor = autor;
+        }
+        if (publish_year !== undefined){
+            parameterByBody(publish_year, 'string');
+            book.publish_year = publish_year;
+        }
+        if (is_deleted !== undefined){
+            parameterByBody(is_deleted, 'string');
+            book.is_deleted = is_deleted;
+        }
+        if (library_id !== undefined){
+            parameterByBody(library_id, 'string');
+            book.library_id = library_id;
         }
     
         const book_edited = await book.save();
@@ -136,8 +151,6 @@ async function editBook(id, isbn, title, autor, publish_year, library_Id){
     }else{
         throw new Error("El libro que buscas no se encuentra en la base de datos.");
     }
-
-
 }
 
 /* Eliminar un libro */

@@ -24,7 +24,7 @@ Books.init({
     publish_year: {
         type: DataTypes.STRING
     },
-    library_Id: {
+    library_id: {
         type: DataTypes.INTEGER
     },
     is_deleted: {

@@ -61,7 +61,7 @@ async function modifyBook(req, res, next) {
       library_id,
       is_deleted
     );
-    res.status(201).send(book);
+    res.status(200).send(book);
   } catch (error) {
     next(error);
   }

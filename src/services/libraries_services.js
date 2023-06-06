@@ -194,16 +194,13 @@ async function deletedLibrary(id) {
 async function addBook(id, isbn, title, autor, publish_year) {
   parameterByParams(id);
 
-  const libraryBooks = await getLibrary(id);
-
-  /* Importado desde books_services */
-  /* Se crea el libro a agregar a la libreria con la funcion createdBook, pero en el parametro de library_id
+  if (await getLibrary(id)) {
+    /* Importado desde books_services */
+    /* Se crea el libro a agregar a la libreria con la funcion createdBook, pero en el parametro de library_id
     ingresamos el id que recibimos por parametro para dejarlo directamente asociado a la libreria */
-  await createdBook(isbn, title, autor, publish_year, id);
-
-  if (libraryBooks) {
+    await createdBook(isbn, title, autor, publish_year, id);
     /* Retornamos la libreria con todos lo libros donde se vera agreado el nuevo. */
-    return libraryBooks;
+    return await getLibrary(id);
   } else {
     throw new Error("El libro no se agrego");
   }

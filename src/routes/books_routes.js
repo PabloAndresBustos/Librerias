@@ -24,6 +24,6 @@ booksRouter.delete(
 );
 
 /* Ruta adicional para traer los libros dados de baja */
-booksRouter.get("/books", userAuthenticate, booksController.allDownBooks);
+booksRouter.get("/down_books", booksController.allDownBooks);
 
 module.exports = { booksRouter };

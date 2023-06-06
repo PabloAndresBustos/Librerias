@@ -61,7 +61,7 @@ async function modifyLibrary(req, res, next) {
       phone,
       is_deleted
     );
-    res.status(201).send(library);
+    res.status(200).send(library);
   } catch (error) {
     next(error);
   }

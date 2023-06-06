@@ -43,7 +43,7 @@ async function createUser(name, user_password) {
 
     await user.save();
     console.log("*********************************************");
-    console.log(`Usuario admin creado satisfacroriamente`);
+    console.log(`Usuario admin creado satisfactoriamente`);
     console.log("*********************************************");
   } else {
     console.log("*********************************************");

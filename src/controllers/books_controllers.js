@@ -41,7 +41,7 @@ async function takeAllBooks(req, res, next) {
 /* Obtener todos los libros dados de baja */
 async function allDownBooks(req, res, next) {
   try {
-    const books = await booksManager.takeAll();
+    const books = await booksManager.downBooks();
     res.status(200).send(books);
   } catch (error) {
     next(error);

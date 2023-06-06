@@ -86,7 +86,7 @@ async function oneBook(id) {
     return book;
   } else {
     /* Caso contrario indicamos que le libro no esta en la base de datos. */
-    throw new Error("El libro que buscas no se encuentra en las bibliotecas");
+    throw new Error("El libro que buscas no se encuentra en la base de datos");
   }
 }
 

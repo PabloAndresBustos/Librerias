@@ -41,7 +41,6 @@ librariesRouter.post(
 /* Ruta adicional para las que estan dadas de baja */
 librariesRouter.get(
   "/down_libraries",
-  userAuthenticate,
   librariesController.allDownLibraries
 );
 

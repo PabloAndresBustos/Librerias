@@ -23,11 +23,6 @@ const PassportStrategy = new JwtStrategy(
     } else {
       next(true, null, null);
     }
-
-    /* Si no recimos el Payload(cons los datos que se cargaron el token) mostraremos el error*/
-    /*     if(!jwtPayload){
-        throw new Error("El usuario no esta logeado");
-    } */
   }
 );
 

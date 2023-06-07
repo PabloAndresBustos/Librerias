@@ -12,6 +12,12 @@ const {
 /* Passport para validar usuario en las rutas */
 authenticationStart();
 
+/* El usuario admin debe ser creado cuando se inicia la API */
+console.log("**********************");
+console.log("Creando usuario admin");
+console.log("**********************");
+await createUser("admin", "admin");
+
 /* Configuracion del servidor */
 const app = express();
 const port = 3031;
@@ -31,8 +37,4 @@ app.listen(port, () => {
   console.log("*********************************************");
 });
 
-/* El usuario admin debe ser creado cuando se inicia la API */
-console.log("**********************");
-console.log("Creando usuario admin");
-console.log("**********************");
-createUser("admin", "admin");
+

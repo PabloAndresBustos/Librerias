@@ -16,7 +16,7 @@ authenticationStart();
 console.log("**********************");
 console.log("Creando usuario admin");
 console.log("**********************");
-await createUser("admin", "admin");
+createUser("admin", "admin");
 
 /* Configuracion del servidor */
 const app = express();

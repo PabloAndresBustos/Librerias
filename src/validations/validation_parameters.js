@@ -15,7 +15,7 @@ function parameterByParams(parameter) {
   const paramsParameter = parseInt(parameter, 10);
   /* NaN: La propiedad global NaN es un valor que representa Not-A-Number. Verificamos si el parametro
     es un numero. */
-  if (isNaN(paramsParameter)) {
+  if (isNaN(paramsParameter)){
     /* Si no indicamos que el parametro debe ser del tipo indicado. */
     throw new Error(
       "El parametro id deber ser del tipo: number, no null o vacio"

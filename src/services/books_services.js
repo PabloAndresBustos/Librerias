@@ -17,7 +17,8 @@ async function sameBook(isbn) {
 
 /* Crear un libro */
 async function createdBook(isbn, title, autor, publish_year, library_id) {
-  parameterByParams(isbn, "number");
+
+  parameterByBody(isbn, "number");
   parameterByBody(title, "string");
   parameterByBody(autor, "string");
   parameterByBody(publish_year, "string");

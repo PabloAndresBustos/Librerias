@@ -86,6 +86,7 @@ async function getLibrary(id) {
     const books = await Books.findAll({
       where: {
         library_id: id,
+        is_deleted: "no"
       },
     });
     booksOnLibrary.library = library;

@@ -5,6 +5,7 @@ const {
   parameterByBody,
   parameterByParams,
 } = require("../validations/validation_parameters");
+require("../db/relations");
 
 /* Buscar una libreria */
 /* Esta funcion se utiliza en la funcion registerLibrary es solo de uso interno, no posee ruta. 
@@ -69,35 +70,32 @@ async function registerLibrary(name, location, phone) {
 async function getLibrary(id) {
   parameterByParams(id);
   /* Creamos un objeto vacio donde guardaremos los resultados */
-  const booksOnLibrary = {};
   /* Buscamos la libreria por id */
   const library = await Library.findOne({
     where: {
       id: id,
       is_deleted: "no",
     },
+    include: {
+      model: Books,
+      as: "BooksOnLibrary",
+      attributes: ["title", "autor", "publish_year", "isbn"],
+      where: {
+        library_id: id,
+        is_deleted: "no",
+      },
+      required: false,
+    },
   });
-
-  console.log(library);
 
   /* Al obtener la libreria la agregamos al objeto creado junto con los libros */
   if (library) {
     /* Buscamos todos los libros cuya realacion con la libria sea igual al id de la libreria */
-    const books = await Books.findAll({
-      where: {
-        library_id: id,
-        is_deleted: "no"
-      },
-    });
-    booksOnLibrary.library = library;
-    booksOnLibrary.books = books;
-
-    return booksOnLibrary;
+    return library;
   } else {
     /* Si no encontramos libreria, la libreria no existe */
     throw new Error("La libreria no existe");
   }
-  s;
 }
 
 /* Obterner todas las librerias */

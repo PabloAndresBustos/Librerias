@@ -1,5 +1,6 @@
 const { Model, DataTypes } = require("sequelize");
 const { libraries_db } = require("../db/libraries_db");
+const { Library } = require("./library");
 
 class Books extends Model {}
 
@@ -37,5 +38,7 @@ Books.init(
     updatedAt: false,
   }
 );
+
+Books.hasMany(Library, {foreignKey: 'id'})
 
 module.exports = { Books };
